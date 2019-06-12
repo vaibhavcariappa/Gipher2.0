@@ -43,7 +43,7 @@ services:
       test: "exit 0"
 
   Gipher_frontend:
-    image: vaibhavcariappa/gipherangularservice:v1
+    image: vaibhavcariappa/gipherangularservice:v2
     network_mode: host
     container_name: gipher_angularservicecontainer
     ports:
