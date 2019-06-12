@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Location } from '@angular/common';
+
 export const USER_NAME = "username";
 export const TOKEN_NAME = "jwt_token";
 
@@ -8,16 +10,25 @@ export const TOKEN_NAME = "jwt_token";
 })
 export class AuthenticationService {
 
-
+  private hostname: string;
   private SpringRegisterEndPoint: string;
   private SpringSaveEndPoint: string;
   private SpringLoginEndPoint: string;
+  
 
   constructor(private httpclient: HttpClient) { 
 
-      this.SpringRegisterEndPoint="http://localhost:9087/giphermanager/api/v1/giphermanager/register"
-      this.SpringLoginEndPoint="http://localhost:9087/accountmanager/api/v1/accountmanager/login";
+      this.hostname = location.host;
+      console.log("Location.host:", this.hostname);
 
+      if (this.hostname.indexOf(':') > 0) {
+        this.hostname = this.hostname.substr(0, this.hostname.indexOf(':'));
+      }
+      console.log("hostname:", this.hostname);      
+      this.SpringRegisterEndPoint="http://" + this.hostname + ":9087/giphermanager/api/v1/giphermanager/register"
+      this.SpringLoginEndPoint="http://" + this.hostname + ":9087/accountmanager/api/v1/accountmanager/login";
+      console.log("SpringRegisterEndPoint:", this.SpringRegisterEndPoint); 
+      console.log("SpringLoginEndPoint:", this.SpringLoginEndPoint);       
   }
 
   registerUser(newUser) {

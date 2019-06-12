@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Gipher } from 'src/app/modules/gipher/gipher';
 import { USER_NAME } from 'src/app/modules/authentication/authentication.service';
 import { HttpHeaders } from '@angular/common/http';
+import { Location } from '@angular/common';
 
 
 @Injectable({
@@ -20,6 +21,7 @@ export class GipherService {
   recommendEndPoint: string;
   username: string;
   byPassCorsUrl: string;
+  hostname: string;
 
   constructor(private httpClient: HttpClient) { 
 
@@ -30,11 +32,19 @@ export class GipherService {
     this.rating = "rating=G";
     this.byPassCorsUrl = "https://cors-anywhere.herokuapp.com/";
  
-    
-    //this.springEndPoint = "http://localhost:8085/api/v1/usertrackservice/";
-    this.springEndPoint = "http://localhost:9087/giphermanager/api/v1/giphermanager/";
-    this.recommendEndPoint = "http://localhost:9087/gipherrecommendersystem/api/v1/gipherrecommendersystem";
+    this.hostname = location.host;
+    console.log("Location.host:", this.hostname);
 
+    if (this.hostname.indexOf(':') > 0) {
+      this.hostname = this.hostname.substr(0, this.hostname.indexOf(':'));
+    }
+    console.log("hostname:", this.hostname);    
+
+    //this.springEndPoint = "http://localhost:8085/api/v1/usertrackservice/";
+    this.springEndPoint = "http://" + this.hostname + ":9087/giphermanager/api/v1/giphermanager/";
+    this.recommendEndPoint = "http://" + this.hostname + ":9087/gipherrecommendersystem/api/v1/gipherrecommendersystem";
+    console.log("springEndPoint:", this.springEndPoint); 
+    console.log("recommendEndPoint:", this.recommendEndPoint);    
   }
 
   getGifDetails(): Observable<any> {
